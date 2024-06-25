@@ -12,8 +12,28 @@ mongoose.connection.on('connected', () => {
 
 const Food = require('./models/foods.js');
 
+//middleware
+app.use(express.urlencoded({ extended: false }));
+
+
 app.get('/', async (req, res) => {
   res.render('index.ejs')
+});
+
+//GET /foods/new
+app.get('/foods/new', (req, res) => {
+  res.render('foods/new.ejs');
+});
+
+// POST /foods
+app.post("/foods", async (req, res) => {
+  if (req.body.isReadyToEat === "on") {
+    req.body.isReadyToEat = true;
+  } else {
+    req.body.isReadyToEat = false;
+  }
+  await Food.create(req.body);
+  res.redirect("/foods/new");
 });
 
 app.listen(3000, () => {
