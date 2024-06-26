@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require("express");
 const mongoose = require('mongoose');
+const methodOverride = require("method-override");
+const morgan = require("morgan");
 
 const app = express();
 
@@ -14,6 +16,8 @@ const Food = require('./models/foods.js');
 
 //middleware
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
+app.use(morgan("dev"))
 
 
 app.get('/', async (req, res) => {
@@ -43,6 +47,11 @@ app.post("/foods", async (req, res) => {
     req.body.isReadyToEat = false;
   }
   await Food.create(req.body);
+  res.redirect("/foods");
+});
+
+app.delete("/foods/:foodId", async (req, res) => {
+  await Food.findByIdAndDelete(req.params.foodId);
   res.redirect("/foods");
 });
 
