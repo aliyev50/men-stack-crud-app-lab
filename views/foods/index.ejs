@@ -12,8 +12,10 @@
     <a href="/foods/new">Add New Foods</a>
     <ul>
         <% foods.forEach(food => { %>
-          <li><%= food.name %></li>
-        <% }); %>
+            <li>
+              <a href="/foods/<%= food._id %>"> <%= food.name %> </a>
+            </li>
+          <% }); %>
       </ul>
 </body>
 </html>
