@@ -20,6 +20,11 @@ app.get('/', async (req, res) => {
   res.render('index.ejs')
 });
 
+app.get('/foods', async (req, res) => {
+  const allFoods = await Food.find();
+  res.render("foods/index.ejs", { foods: allFoods });
+});
+
 //GET /foods/new
 app.get('/foods/new', (req, res) => {
   res.render('foods/new.ejs');
@@ -33,7 +38,7 @@ app.post("/foods", async (req, res) => {
     req.body.isReadyToEat = false;
   }
   await Food.create(req.body);
-  res.redirect("/foods/new");
+  res.redirect("/foods");
 });
 
 app.listen(3000, () => {
